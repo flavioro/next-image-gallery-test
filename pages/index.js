@@ -10,6 +10,7 @@ const PREFIX_URL = '/projetos_destaques/'
 const codeHouses = projs.casas
 
 function App() {
+  const router = useRouter()
   const [images, SetImages ] = useState([])
 
   useEffect(() => {
@@ -25,12 +26,10 @@ function App() {
       }
     }
     SetImages(imagesArray)
-    console.log(images)
   }, [])  
   
   const _onImageClick = () => {
-    useRouter().push('/page')
-    // alert('Hi')
+    router.push('/page')
   }
 
   return (
