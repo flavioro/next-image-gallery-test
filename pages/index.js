@@ -9,26 +9,11 @@ import projs from '../services/api.fake.json'
 const PREFIX_URL = '/projetos_destaques/'
 const codeHouses = projs.casas
 
-// const images = () => {
-//   // Create array images
-//   for (const key in codeHouses) {
-//     if (codeHouses.hasOwnProperty(key)) {
-//       const original = PREFIX_URL + codeHouses[key]
-//       const item = {
-//         original: original,
-//         thumbnail: original,
-//       }
-//       images.push(item) // Add array images
-//     }
-//   }
-//   return images
-// }
-
 function App() {
   const [images, SetImages ] = useState([])
 
-
   useEffect(() => {
+    let imagesArray = []
     for (const key in codeHouses) {
       if (codeHouses.hasOwnProperty(key)) {
         const original = PREFIX_URL + codeHouses[key]
@@ -36,9 +21,11 @@ function App() {
           original: original,
           thumbnail: original,
         }
-        images.push(item) // Add array images
+        imagesArray.push(item) // Add array images
       }
     }
+    SetImages(imagesArray)
+    console.log(images)
   }, [])  
   
   const _onImageClick = () => {
