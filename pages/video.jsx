@@ -13,7 +13,8 @@ export default class App extends React.Component {
       showFullscreenButton: true,
       showPlayButton: true,
       showGalleryPlayButton: true,
-      showVideo: {},
+      // showVideo: {},
+      isVideo: false
     };
 
     this.images = [
@@ -70,7 +71,7 @@ export default class App extends React.Component {
       <section className='app'>
         <ImageGallery
           items={this.images}
-          onSlide={this._onSlide.bind(this)}
+          onSlide={this._onSlide.bind(this)} //change slide(image)
           // autoPlay={true}
           showFullscreenButton={this.state.showFullscreenButton && this.state.showGalleryFullscreenButton}
           showPlayButton={this.state.showPlayButton && this.state.showGalleryPlayButton}
@@ -80,7 +81,8 @@ export default class App extends React.Component {
   }
 
   _resetVideo() {
-    this.setState({showVideo: {}});
+    // this.setState({showVideo: {}});
+    this.setState({isVideo: false});
 
     if (this.state.showPlayButton) {
       this.setState({showGalleryPlayButton: true});
@@ -92,12 +94,11 @@ export default class App extends React.Component {
   }
 
   _toggleShowVideo(url) {
-    this.state.showVideo[url] = !Boolean(this.state.showVideo[url]);
-    this.setState({
-      showVideo: this.state.showVideo
-    });
+    // this.state.showVideo[url] = !Boolean(this.state.showVideo[url]);
+    this.setState({isVideo: true});
 
-    if (this.state.showVideo[url]) {
+    // if (this.state.showVideo[url]) {
+    if (!this.state.isVideo) {
       if (this.state.showPlayButton) {
         this.setState({showGalleryPlayButton: false});
       }
@@ -108,43 +109,47 @@ export default class App extends React.Component {
     }
   }
 
-  _renderVideo(item) {
-    return (
-      <div>
-        {
-          this.state.showVideo[item.embedUrl] ?
-            <div className='video-wrapper'>
-                <a
-                  className='close-video'
-                  onClick={this._toggleShowVideo.bind(this, item.embedUrl)}
+_renderVideo(item) {
+  return (
+    <div>
+      {
+        // this.state.showVideo[item.embedUrl] ?
+        this.state.isVideo ?
+          <div className='video-wrapper'>
+              <a
+                className='close-video'
+                onClick={this._toggleShowVideo.bind(this, item.embedUrl)}
+              >
+              </a>
+              <iframe
+                width='560'
+                height='315'
+                src={item.embedUrl}
+                frameBorder='0'
+                allowFullScreen
+              >
+              </iframe>
+              <p>Never here</p>
+          </div>
+        :
+          <a onClick={this._toggleShowVideo.bind(this, item.embedUrl)}>
+            <div className='play-button'></div>
+            <img className='image-gallery-image' src={item.original} />
+            {
+              item.description &&
+                <span
+                  className='image-gallery-description'
+                  style={{right: '0', left: 'initial'}}
                 >
-                </a>
-                <iframe
-                  width='560'
-                  height='315'
-                  src={item.embedUrl}
-                  frameBorder='0'
-                  allowFullScreen
-                >
-                </iframe>
-            </div>
-          :
-            <a onClick={this._toggleShowVideo.bind(this, item.embedUrl)}>
-              <div className='play-button'></div>
-              <img className='image-gallery-image' src={item.original} />
-              {
-                item.description &&
-                  <span
-                    className='image-gallery-description'
-                    style={{right: '0', left: 'initial'}}
-                  >
-                    {item.description}
-                  </span>
-              }
-            </a>
-        }
-      </div>
-    );
-  }
+                  {item.description}
+                </span>
+            }
+          </a>
+      }
+    </div>
+  );
+}
 
 }
+
+
