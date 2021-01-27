@@ -48,28 +48,54 @@ function App() {
   // }, [showVideo])  
   
   function _renderVideo(item) {
+    console.log(showVideo)
     return (
       <div>
         {
-          <a onClick={_toggleShowVideo.bind(this, item.embedUrl)}>
-            {/* <div className='play-button'></div> */}
-            {/* <img className='image-gallery-image' src={item.original} /> */}
-            <iframe id="videoYoutube"
-                width='560'
-                height='315'
-                src={item.embedUrl}
-                frameBorder='0'
-                allowFullScreen
-              >
-              </iframe>
-          </a>
+          showVideo ?
+            <div className='video-wrapper'>
+                {/* <a
+                  className='close-video'
+                  onClick={_toggleShowVideo(item.embedUrl)}
+                >
+                </a> */}
+                <iframe
+                  width='560'
+                  height='315'
+                  src={item.embedUrl}
+                  frameBorder='0'
+                  allowFullScreen
+                >
+                </iframe>
+            </div>
+          :
+            <a onClick={_toggleShowVideo.bind(this, item.embedUrl)}>
+              <div className='play-button'></div>
+              {/* <img className='image-gallery-image' src={item.original} /> */}
+              <iframe
+                  width='560'
+                  height='315'
+                  src={item.embedUrl}
+                  frameBorder='0'
+                  allowFullScreen
+                >
+                </iframe>
+              {
+                item.description &&
+                  <span
+                    className='image-gallery-description'
+                    style={{right: '0', left: 'initial'}}
+                  >
+                    {item.description}
+                  </span>
+              }
+            </a>
         }
       </div>
     );
   }
   
   function _toggleShowVideo(url) {
-    console.log(showVideo)
     SetShowVideo(true);
     // this.setState({
     //   showVideo: showVideo
@@ -86,25 +112,6 @@ function App() {
     // }
   }
 
-  function _resetVideo() {
-    const videoYoutube = document.getElementById('videoYoutube')
-    const iframeSrc = videoYoutube.src
-    videoYoutube.src = iframeSrc
-    console.log('_resetVideo', showVideo)
-
-    // this.setState({showVideo: {}});
-    // this.setState({isVideo: false});
-
-    // if (this.state.showPlayButton) {
-    //   this.setState({showGalleryPlayButton: true});
-    // }
-
-    // if (this.state.showFullscreenButton) {
-    //   this.setState({showGalleryFullscreenButton: true});
-    // }
-  }
-
-
   return (
     <section className='app'>
       <ImageGallery
@@ -113,16 +120,9 @@ function App() {
         showPlayButton= {true}
         showGalleryPlayButton= {true}
         items={images} 
-        onSlide={_onSlide.bind(this)} //change slide(image)
       />
     </section>
   );
-
-  function _onSlide(index) {
-
-
-    _resetVideo();
-  }
 }
 
 export default App;
